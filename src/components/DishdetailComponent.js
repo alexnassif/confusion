@@ -22,7 +22,7 @@ class DishDetail extends Component {
       return (
         <div className="container">
         <h4>Comments</h4>
-          <ul className="list-group">
+          <ul className="list-unstyled">
             {c}
           </ul>
         </div>
