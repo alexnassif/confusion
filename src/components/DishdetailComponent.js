@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { Card, CardImg, CardText, CardBody,
-    CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+    CardTitle, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody,
+    Form, FormGroup, Input, Label} from 'reactstrap';
 import { Link } from 'react-router-dom';
 
   function RenderDish({dish}){
@@ -19,6 +20,45 @@ import { Link } from 'react-router-dom';
 
   }
 
+  class CommentForm extends Component {
+
+    constructor(props){
+      super(props);
+      this.state = {
+
+        isModalOpen: false
+      };
+
+      this.toggleModal = this.toggleModal.bind(this);
+
+
+    }
+
+    toggleModal() {
+      this.setState({
+        isModalOpen: !this.state.isModalOpen
+      });
+    }
+
+    render(){
+
+      return(
+        <div>
+        <Button outline onClick={this.toggleModal}>
+          <span className="fa fa-sign-in fa-lg"></span> Login
+        </Button>
+        <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+           <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
+           <ModalBody>
+
+           </ModalBody>
+         </Modal>
+         </div>
+      );
+
+    }
+
+  }
 
   function RenderComments({comments}){
       if(comments != null){
@@ -37,6 +77,7 @@ import { Link } from 'react-router-dom';
             <ul className="list-unstyled">
                 {c}
             </ul>
+            <CommentForm />
           </div>
 
         );
@@ -64,7 +105,7 @@ import { Link } from 'react-router-dom';
               </div>
                 <div className="row">
                   <RenderDish dish={props.dishdetail} />
-                  <RenderComments comments={props.comments} />  
+                  <RenderComments comments={props.comments} />
                 </div>
               </div>
 
