@@ -35,6 +35,7 @@ const minLength = (len) => (val) => val && (val.length >= len);
       };
 
       this.toggleModal = this.toggleModal.bind(this);
+      this.handleSubmit= this.handleSubmit.bind(this);
 
 
     }
@@ -43,6 +44,11 @@ const minLength = (len) => (val) => val && (val.length >= len);
       this.setState({
         isModalOpen: !this.state.isModalOpen
       });
+    }
+
+    handleSubmit(values) {
+      this.toggleModal();
+      this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render(){
@@ -55,11 +61,11 @@ const minLength = (len) => (val) => val && (val.length >= len);
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
            <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
            <ModalBody>
-           <LocalForm >
+           <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
               <FormGroup>
 
                 <Label htmlFor="name" >Your Name</Label>
-                    <Control.text model=".name" id="name" name="name"
+                    <Control.text model=".author" id="author" name="author"
                                placeholder="Your Name"
                                className="form-control"
                                validators={{
@@ -68,7 +74,7 @@ const minLength = (len) => (val) => val && (val.length >= len);
                                     />
                                <Errors
                                    className="text-danger"
-                                   model=".name"
+                                   model=".author"
                                    show="touched"
                                    messages={{
                                        required: 'Required',
@@ -102,7 +108,7 @@ const minLength = (len) => (val) => val && (val.length >= len);
 
   }
 
-  function RenderComments({comments}){
+  function RenderComments({comments, addComment, dishId}){
       if(comments != null){
         const c = comments.map((comment) => {
             return (
@@ -119,7 +125,7 @@ const minLength = (len) => (val) => val && (val.length >= len);
             <ul className="list-unstyled">
                 {c}
             </ul>
-            <CommentForm />
+            <CommentForm dishId={dishId} addComment={addComment} />
           </div>
 
         );
@@ -147,7 +153,9 @@ const minLength = (len) => (val) => val && (val.length >= len);
               </div>
                 <div className="row">
                   <RenderDish dish={props.dishdetail} />
-                  <RenderComments comments={props.comments} />
+                  <RenderComments comments={props.comments}
+                  addComment={props.addComment}
+                  dishId={props.dishdetail.id}/>
                 </div>
               </div>
 
